@@ -16,7 +16,7 @@
     {
         while (!stoppingToken.IsCancellationRequested)
         {
-            // Check for the existence of files in the directory
+            
             string[] files = Directory.GetFiles(directoryPath, fileToWatch);
 
             foreach (string filePath in files)
@@ -36,7 +36,7 @@
                 else
                 {
                     Console.WriteLine($"File found: {filePath}");
-                    // Call method in DataParserService to process the file
+                    
                     _dataParserService.ProcessFile(filePath);
                 }
             }
@@ -46,16 +46,10 @@
     }
     private bool IsFileDuplicate(string filePath)
     {
-        // Check if the file exists in the parsed directory
+
         string parsedFilePath = Path.Combine(parsedDirectoryPath, Path.GetFileName(filePath));
         return File.Exists(parsedFilePath);
     }
-    //private bool IsFileBeingWritten(string filePath)
-    //{
-    //    // Check if the file was written to in the last few seconds
-    //    var fileInfo = new FileInfo(filePath);
-    //    var fileAge = DateTime.Now - fileInfo.LastWriteTime;
-    //    return fileAge < FileAgeThreshold;
-    //}
+
 }
 

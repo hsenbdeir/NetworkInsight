@@ -19,11 +19,10 @@ public class LoaderService
         string tableName2 = "Radio_Power";
         string rfInputFields = "NeId Float,     Object varchar(255), Time Timestamp,     \"Interval\" varchar(255),     Direction varchar(255),     NeAlias varchar(255),     NeType varchar(255),     RFInputPower float,     TID varchar(255),         FarEndTID varchar(255),         FailureDescription varchar(255),   SLOT varchar(255),     PORT varchar(255),     DATETIME_KEY Timestamp";
         string radioPowerFields = "NeId Float, Object varchar(255), Time Timestamp,\"Interval\" varchar(255), Direction varchar(255),NeAlias varchar(255), NeType varchar(255), RxLevelBelowTS1 varchar(255),  RxLevelBelowTS2 float, MinRxLevel float, MaxRxLevel float, TxLevelAboveTS1 float, MinTxLevel float, MaxTxLevel float, FailureDescription varchar(255), LINK varchar(255) , TID varchar(255), FarEndTID varchar(255), SLOT varchar(255), PORT varchar(255) , DATETIME_KEY Timestamp";
-        //string rfInputAggFields = "";
         try
         {
             var csvFiles = Directory.GetFiles(outputDirectory, "*.csv");
-            //Console.WriteLine(csvFiles);
+            
             using (OdbcConnection connection = new OdbcConnection(connectionString))
             {
                 connection.Open();
@@ -31,13 +30,7 @@ public class LoaderService
 
                 foreach (var csvFile in csvFiles)
                 {
-                    // Read all lines from the CSV file
-                    //var lines = File.ReadAllLines(csvFile);
-                    //Console.WriteLine(lines);
-                    //Console.WriteLine(line);
-
-                    /*  string copySQL = $"COPY {tableName} FROM LOCAL '{csvFile.Replace("\\","/")}'  DELIMITER ','  DIRECT";*/
-                    if (csvFile == @"C:\Users\User\Desktop\IMS\Output\SOEM1_TN_RFInputPower.csv")
+                     if (csvFile == @"C:\Users\User\Desktop\IMS\Output\SOEM1_TN_RFInputPower.csv")
                     {
                         createSQL = $"Create table if not exists {tableName} ({rfInputFields}) SEGMENTED BY hash(NeId) ALL NODES KSAFE 1; ";
                         Console.WriteLine("RF Table created");
@@ -64,7 +57,7 @@ public class LoaderService
                     }
                     Console.WriteLine($"Data copied successfully: {csvFile}");
 
-                    //File.Delete(csvFile);
+                    File.Delete(csvFile);
                     Console.WriteLine($"File Deleted; {csvFile}");
                 }
             }
