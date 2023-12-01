@@ -1,6 +1,15 @@
 ﻿using CsvHelper;
 using CsvHelper.Configuration;
+using CsvHelper.Configuration.Attributes;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Data.Common;
 using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Security.Cryptography;
 
 public class DataParserService
 {
@@ -46,6 +55,8 @@ public class DataParserService
             WriteToCsvFile(outputDirectory, header, records, inputFilePath);
             ArchiveFile(inputFilePath);
             Console.Write(outputDirectory);
+            //if(header.Find(Link))
+            /*            _LoaderService.CreateDatabaseTable(header);*/
             _LoaderService.InsertDataIntoDatabaseTable(outputDirectory);
 
         }
@@ -106,6 +117,8 @@ public class DataParserService
     public void WriteToCsvFile(string outputDirectory, List<string> header, List<Dictionary<string, string>> records, string inputFilePath)
     {
         string inputFileName = Path.GetFileNameWithoutExtension(inputFilePath);
+        /*        string substringFromInputFileName = inputFilePath.Substring(6, inputFilePath.IndexOf('_')); // Adjust the substring length as needed
+               Console.WriteLine("Input file Name is : " +inputFileName);*/
         string outputFileName = $"{inputFileName.Substring(0, inputFileName.IndexOf("_202"))}.csv";
         Console.WriteLine("Output file Name is : " + outputFileName);
         string filePath = Path.Combine(outputDirectory, outputFileName);
@@ -169,7 +182,7 @@ public class DataParserService
 
                     if (!skipRecord)
                     {
-
+                        // Generate and add new fields to the record
                         foreach (var (newField, generateFunction) in newFields)
                         {
                             if (!record.ContainsKey(newField))
@@ -178,7 +191,7 @@ public class DataParserService
                             }
                         }
 
-                     
+                        // Write the filtered record
                         foreach (var fieldName in filteredHeader)
                         {
 
